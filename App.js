@@ -1,58 +1,64 @@
 import rect, { useState } from "react";
 
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 
 export default function App() {
-  const [name, setName] = useState({
-    firstName: "Himindu",
-    lastName: "Kularathne",
-  });
+  const [people , setPeople] = useState([
+    {name : "Himindu" , id : 1},
+    {name : "Shenali" , id : 2},
+    {name : "Dimuthu" , id : 3},
+    {name : "Kumari" , id : 4},
+    {name : "Daya" , id : 5}
+    
+  ])
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-
+  const pressHandler = (id) => {
+    console.log("the id is "+ id);
+  }
   return (
     <View style={styles.maindividion}>
-      <Text style={styles.maintext}>
-        {" "}
-        My name is {name.firstName}{" "}
-        <Text style={styles.surname}> {name.lastName}</Text>
-      </Text>
-      <View style={styles.inputSection}>
-        <Text> Enter your first name :</Text>
-        <TextInput 
-        style = {styles.input}
-        placeholder="Shenali"
-        onChangeText={(e) => {
-          setFirstName(e);
-        }}
-         />
-        </View>
-        <View style={styles.inputSection}>
-        <Text> Enter your last name :</Text>
-        <TextInput 
-        style = {styles.input}
-        placeholder="Senarathne"
-        onChangeText={(e) => {
-          setLastName(e);
-        }}
-         />
-        </View>
-      
-      <View style={styles.buttonContainer}>
-        <Button
+      <FlatList
+      numColumns={2}
+      keyExtractor={(item) => item.id}
+       data = {people}
+       renderItem={({item}) =>(
+        <TouchableOpacity
+          onPress={() => pressHandler(item.id)}
+        > 
+        <View style = {styles.personCard} >
+            <Text style = {styles.id} >{item.id}:  </Text>
+            <Text style = {styles.name}>{item.name}</Text>
+
+       </View>
+       </TouchableOpacity>
+       )}
+
+
+    />
+
+
+
+
+
+
+
+
+      {/* <ScrollView >
+      {
+        people.map( (person) => {
+          return (
+              <View style = {styles.personCard} >
+                <Text style = {styles.id}>{person.id}</Text>
+                <Text style = {styles.name}>{person.name}</Text>
+
+              </View>
+          );
           
-          title="CHANGE NAME"
-          onPress={() => {
-            
-            setName({firstName: firstName, lastName: lastName});
-          
-            
-          }}
-        />
-      </View>
-      <StatusBar style="auto" />
+        }
+        )
+      }
+      </ScrollView> */}
     </View>
   );
 }
@@ -64,40 +70,34 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#fff",
     alignItems: "center",
-  },
-  maintext: {
-    color: "blue",
-    fontSize: 30,
-    textAlign: "center",
-    fontWeight: "bold",
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  input: {
-    width: 200,
-    height: 30,
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 5,
-    paddingLeft: 10,
-    marginLeft: 10,
-  },
-  surname: {
-    color: "red",
-    fontSize: 30,
-  },
-  buttonContainer: {
-    marginTop: 50,
-    backgroundColor: "lightblue",
-    borderRadius: 10,
-  },
-  inputSection: {
-    display : "flex",
-    flexDirection : "row",
-    marginTop:10,
+    overflow: "scrollY",
+    backgroundColor: "lightgreen",
+    paddingTop : 100,
   },
   
+  personCard: {
+    display : "flex",
+    flexDirection : "row",
+    width : 150,
+    height : 100,
+    backgroundColor: "green",
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal : 10,
+    borderRadius: 10,
 
 
- 
+  },
+  name : {
+    fontSize : 20,
+    
+    color: "white",
+  },
+  id: {
+    fontSize : 20,
+    color: "white",
+  }
+
+
 });
